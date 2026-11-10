@@ -1,0 +1,26 @@
+# ===== Web 框架 =====
+fastapi==0.136.3
+uvicorn==0.48.0
+
+# ===== 数据校验与配置 =====
+pydantic==2.13.4
+pydantic-settings==2.15.0
+
+# ===== LLM / Agent 编排 =====
+langchain==1.4.0
+langchain-core==1.7.6
+langchain-openai==1.6.2
+langgraph==1.2.11
+
+# ===== 向量数据库 =====
+qdrant-client==1.20.0
+
+# ===== 日志 =====
+loguru==0.7.3
+
+# ===== 会话存储 =====
+redis==5.2.1
+
+# ===== 认证 / 图形验证码 =====
+bcrypt==5.0.0
+pillow==12.2.0

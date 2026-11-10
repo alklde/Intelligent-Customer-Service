@@ -1,0 +1,75 @@
+# AI Agent Suite 基础设施编排
+# 用法: docker compose up -d qdrant redis   (仅启动中间件, FastAPI 亦可一并拉起)
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.12.4
+    container_name: suite_qdrant
+    ports:
+      - "6333:6333"   # HTTP API
+      - "6334:6334"   # gRPC
+    volumes:
+      - qdrant_data:/qdrant/storage
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: suite_redis
+    ports:
+      - "6381:6379"   # 宿主机 6379 常被已有服务占用, 容器版映射至 6381 仅作备用;
+                      # 本地开发默认连接宿主机已有 Redis (config.redis_url)
+    restart: unless-stopped
+
+  # ---- 公共模板: 代码卷挂载 + 宿主机 Ollama 直连 ----
+  x-fastapi-base: &fastapi-base
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      LLM_BASE_URL: http://host.docker.internal:11434/v1
+      QDRANT_URL: http://qdrant:6333
+      REDIS_URL: redis://redis:6379/1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - qdrant
+      - redis
+
+  proj1-rag-api:
+    <<: *fastapi-base
+    container_name: proj1_rag_api
+    ports:
+      - "8001:8000"
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+             uvicorn proj1_rag.api:app --host 0.0.0.0 --port 8000"
+
+  proj2-cs-api:
+    <<: *fastapi-base
+    container_name: proj2_cs_api
+    ports:
+      - "8002:8000"
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+             uvicorn proj2_customer_service.api:app --host 0.0.0.0 --port 8000"
+
+  proj3-eval-api:
+    <<: *fastapi-base
+    container_name: proj3_eval_api
+    ports:
+      - "8003:8000"
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+             uvicorn proj3_eval_platform.api:app --host 0.0.0.0 --port 8000"
+
+  proj4-admin-api:
+    <<: *fastapi-base
+    container_name: proj4_admin_api
+    ports:
+      - "8004:8000"
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+             uvicorn proj4_admin.api:app --host 0.0.0.0 --port 8000"
+
+volumes:
+  qdrant_data:

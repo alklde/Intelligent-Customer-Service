@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 环境与密钥
+.env
+.env.*
+!.env.example
+
+# 日志与运行产物
+logs/
+*.log
+proj3_eval_platform/reports/
+
+# 前端
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+.pnpm-store/
+
+# 设计说明类文档（按需保留在本地，不随仓库上传）
+docs/
+
+# 系统与编辑器
+.DS_Store
+.idea/
+.vscode/
+*.swp

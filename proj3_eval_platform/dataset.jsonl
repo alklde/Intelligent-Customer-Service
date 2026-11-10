@@ -1,0 +1,6 @@
+{"case_id": "case_001", "input": "帮我查一下订单 ORD2024110015", "expected_output": "订单 ORD2024110015 状态：已发货，预计 2 天内送达。", "allowed_tools": ["query_order", "create_ticket"]}
+{"case_id": "case_002", "input": "我买的耳机收到就是坏的，一点声音都没有，太气人了，赶紧帮我提交一个高优先级工单", "expected_output": "工单创建成功，客服将在 24 小时内跟进。", "allowed_tools": ["query_order", "create_ticket"]}
+{"case_id": "case_003", "input": "你好呀，请问你是谁？", "expected_output": "你好，我是电商客服小助手，请问有什么可以帮您？", "allowed_tools": []}
+{"case_id": "case_004", "input": "我不想跟你废话了，直接给我转人工客服", "expected_output": "已处理，正在等待人工客服介入", "allowed_tools": ["query_order", "create_ticket"]}
+{"case_id": "case_005", "input": "帮我查一下订单 ORD2024000099 的物流", "expected_output": "抱歉，当前账户暂无订单查询权限。", "allowed_tools": ["create_ticket"]}
+{"case_id": "badcase_0d9a9068_1110200911", "input": "我的订单 ORD2024000099 丢了要投诉", "expected_output": "已为您登记物流丢失赔付申请，24 小时内补发新件。", "allowed_tools": ["query_order", "create_ticket"]}
